@@ -13,8 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source code
+      - name: Checkout devops-app
         uses: actions/checkout@v6
+
+      - name: Checkout company-common-lib
+        uses: actions/checkout@v6
+        with:
+          repository: avi6650/company-common-lib
+          path: company-common-lib
 
       - name: Set up Java 21
         uses: actions/setup-java@v4
@@ -23,5 +29,24 @@ jobs:
           java-version: '21'
           cache: gradle
 
-      - name: Build application
+      - name: Publish internal library
+        working-directory: company-common-lib
+        run: ./gradlew publish
+
+      - name: Build and test devops-app
+        env:
+          INTERNAL_REPO_URL: ${{ github.workspace }}/company-common-lib/lib/build/internal-repo
         run: ./gradlew clean build
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: build/reports/tests/
+
+      - name: Upload application JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: devops-app-jar
+          path: build/libs/*.jar
