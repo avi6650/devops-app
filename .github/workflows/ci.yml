@@ -58,7 +58,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v5
         with:
-          name: app-jar
+          name: devops-app-jar
           path: artifact
 
       - name: Verify JAR
