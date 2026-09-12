@@ -1,0 +1,10 @@
+.git
+.github
+.gradle
+.idea
+*.iml
+.DS_Store
+src
+gradle
+gradlew
+gradlew.bat

@@ -63,3 +63,23 @@ jobs:
 
       - name: Verify JAR
         run: ls -lh artifact/
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout devops-app
+        uses: actions/checkout@v6
+
+      - name: Download application JAR
+        uses: actions/download-artifact@v5
+        with:
+          name: devops-app-jar
+          path: build/libs
+
+      - name: Build Docker image
+        run: docker build -t devops-app:${{ github.sha }} .
+
+      - name: Verify Docker image
+        run: docker images devops-app
