@@ -3,6 +3,8 @@ plugins {
 	id 'org.springframework.boot' version '4.1.1'
 	id 'io.spring.dependency-management' version '1.1.7'
 	id 'org.owasp.dependencycheck' version '12.2.2'
+	id 'org.sonarqube' version '6.2.0.5505'
+	id 'jacoco'
 }
 
 group = 'com.devopsproject'
@@ -51,6 +53,24 @@ dependencyCheck {
     }
 }
 
+
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+sonar {
+    properties {
+        property "sonar.projectKey", "avi6650_devops-app"
+        property "sonar.organization", "avi6650"
+        property "sonar.host.url", "https://sonarcloud.io"
+    }
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        html.required = true
+    }
 }
