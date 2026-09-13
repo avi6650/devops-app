@@ -51,6 +51,19 @@ jobs:
           name: devops-app-jar
           path: build/libs/*.jar
 
+      - name: OWASP Dependency Check
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+          INTERNAL_REPO_URL: ${{ github.workspace }}/company-common-lib/lib/build/internal-repo
+        run: ./gradlew dependencyCheckAnalyze --rerun-tasks
+
+      - name: Upload OWASP report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-report
+          path: build/reports/dependency-check-report.html
+          
   package:
     runs-on: ubuntu-latest
     needs: build
