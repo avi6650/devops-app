@@ -10,6 +10,8 @@ plugins {
 group = 'com.devopsproject'
 version = '0.0.1-SNAPSHOT'
 
+ext['tomcat.version'] = '11.0.25'
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(21)
