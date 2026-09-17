@@ -11,7 +11,19 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './gradlew clean build'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'artifactory-local-credentials',
+                        usernameVariable: 'ARTIFACTORY_USER',
+                        passwordVariable: 'ARTIFACTORY_PASSWORD'
+                    )
+                ]) {
+                    withEnv([
+                        'INTERNAL_REPO_URL=http://localhost:8082/artifactory/devops-maven-virtual'
+                    ]) {
+                        sh './gradlew clean build'
+                    }
+                }
             }
         }
     }
