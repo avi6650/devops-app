@@ -3,12 +3,17 @@ pipeline {
         label 'gradle'
     }
 
+    tools {
+        jfrog 'jfrog-cli'
+    }
+
     options {
         timeout(time: 15, unit: 'MINUTES')
         disableConcurrentBuilds()
     }
 
     stages {
+
         stage('Build') {
             steps {
                 withCredentials([
@@ -24,6 +29,12 @@ pipeline {
                         sh './gradlew clean build'
                     }
                 }
+            }
+        }
+
+        stage('Verify JFrog CLI') {
+            steps {
+                jf '-v'
             }
         }
     }
