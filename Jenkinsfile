@@ -32,9 +32,11 @@ pipeline {
             }
         }
 
-        stage('Verify JFrog CLI') {
+        stage('Verify JFrog Connection') {
             steps {
                 jf '-v'
+                jf 'c show'
+                jf 'rt ping --server-id=artifactory-local'
             }
         }
     }
