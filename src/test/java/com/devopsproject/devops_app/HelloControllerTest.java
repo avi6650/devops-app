@@ -19,6 +19,6 @@ class HelloControllerTest {
     void helloEndpointReturnsExpectedMessage() throws Exception {
         mockMvc.perform(get("/hello"))
                 .andExpect(status().isOk())
-                .andExpect(content().string("Hello from internal company library!"));
+                .andExpect(content().string("Hello from DevOps App!"));
     }
 }
